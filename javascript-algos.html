@@ -1,14 +1,17 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+<script src="./node_modules/lodash/lodash.min.js"></script>
+<link href="./node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
 <h3>
     Messages App
-    <button onclick="clearMessages()">
+    <button class="btn btn-primary btn-sm" onclick="clearMessages()">
         Clear Messages
     </button>
 </h3>
 <div>
     <!-- TODO ADD AN ATTRIBUTE THAT focuses the CURSOR INTO THE TEXTAREA ELEMENT WHEN THE PAGE LOADS -->
     <textarea 
-        autofocus
+        autofocus="autofocus"
         rows=6 
         cols=55 
         id="inputText" 
@@ -61,6 +64,10 @@
     function clearMessages() {
         /*TODO CLEAR MESSAGES FROM DOCUMENT WHEN USER CLICKS THE [CLEAR MESSAGES] BUTTON */
         /* EXTRA CREDIT INCLUDE A SCRIPT TAG THATS FETCHES BOOTSTRAP CSS STLYINGS AND STYLE THE BUTTONS */
+        var messageContainer = document.getElementById('messagesContainer');
+        messageContainer.innerHTML = '';
+
+
     }
 
     function addPlainMessage() {
@@ -75,6 +82,8 @@
 
     function addHandleMessage(handle) {
         var messagesContainer = document.getElementById('messagesContainer');
+        var userText = getUserText();
+        userText = userText.substr(userText.indexOf(" ") + 1);
         var messageDiv = document.createElement('p');
         var handleSpan = document.createElement('span');
         handleSpan.style['color'] = 'dodgerblue';
@@ -84,7 +93,7 @@
         //        WITH ANY ADDITIONAL USER TEXT FROM THE ORIGIN USER TEXT MESSAGE
         var dummyText = 'TODO:: EXCLUDING THE ORIGINALLY TYPED USER NAME REPLACE THIS TEXT \
                          WITH ANY ADDITIONAL USER TEXT FROM THE ORIGIN USER TEXT MESSAGE';
-        var messageText = document.createTextNode(`${dummyText} `);
+        var messageText = document.createTextNode(` ${userText} `);
         messageDiv.appendChild(handleSpan);
         messageDiv.appendChild(messageText);
         messagesContainer.appendChild(messageDiv);
@@ -131,6 +140,36 @@
             firstName: 'Horace',
             lastName: 'Grant',
             handle: '@HGrant'
+        },
+        {
+            firstName: 'Stephanie',
+            lastName: 'Kim',
+            handle: '@SKim'
+        },
+        {
+            firstName: 'Sherlock',
+            lastName: 'Holmes',
+            handle: '@SHolmes'
+        },
+        {
+            firstName: 'Karen',
+            lastName: 'Oh',
+            handle: '@KO'
+        },
+        {
+            firstName: 'Yorick',
+            lastName: 'Brown',
+            handle: '@YTheLastMan'
+        },
+        {
+            firstName: 'Miles',
+            lastName: 'Davis',
+            handle: '@MDavis'
+        },
+        {
+            firstName: 'Harry',
+            lastName: 'Potter',
+            handle: '@HP'
         }
     ];
 
@@ -146,8 +185,8 @@
         }
     }
 
-    function initConstantTimeNameFileter() {
-        /* EXTRA CREDIT */
+    function initConstantTimeNameFilter() {
+
     }
     function constantTimeNameFilter(userText) {
         /* EXTRA CREDIT :: CONVERT filterNames FUNCTION TO DO CONSTANT TIME LOOK UP.  
@@ -175,6 +214,8 @@
 
     function initFilteredNames(filteredNames) {
         clearNames();
+        //I added clearFilteredNames() so that when the new filtered names get loaded it removes existing ones and replaces them
+        clearFilteredNames();
         var rootDiv = document.createElement('div');
         rootDiv.id = 'filteredNamesContainer';
         var namesContainer = document.createElement('div');
@@ -186,7 +227,9 @@
             var text = document.createTextNode(`${name.firstName} ${name.lastName}`);
             nameElm.appendChild(text);
             namesContainer.appendChild(nameElm);
-            
+            nameElm.addEventListener("click", function(){
+                addHandleMessage(name.handle);
+            });
             /* 
                 TODO :: ADD CLICK EVENT LISTENER [addEventListener] TO EACH NAME ELEMENT.
                 IF THE USER CLICKS ON A FILTERED NAME THEN THEN A MESSAGE IS OUTPUT
@@ -249,7 +292,7 @@
             'input',
             debounce(
                 searchNames,
-                20000
+                1750
             )
         );
         initDocument();
